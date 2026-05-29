@@ -1,0 +1,58 @@
+{
+    "name": "devskio/laravel-ohdear-health-check",
+    "description": "A Laravel package to perform health checks for Oh Dear.",
+    "keywords": [
+        "devskio",
+        "laravel",
+        "laravel-ohdear-health-check"
+    ],
+    "homepage": "https://github.com/devskio/laravel-ohdear-health-check",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "devskio",
+            "email": "office@devsk.io",
+            "role": "Company"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "ohdearapp/health-check-results": "^1.0",
+        "spatie/laravel-health": "^1.23",
+        "spatie/laravel-package-tools": "^1.16",
+        "illuminate/contracts": "^10.0||^11.0",
+        "illuminate/http": "^10.0||^11.0",
+        "illuminate/routing": "^10.0||^11.0",
+        "illuminate/support": "^10.0||^11.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.14",
+        "nunomaduro/larastan": "^2.0.1",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Devskio\\LaravelOhdearHealthCheck\\": "src/"
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Devskio\\LaravelOhdearHealthCheck\\LaravelOhdearHealthCheckServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
