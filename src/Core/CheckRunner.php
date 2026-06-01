@@ -107,7 +107,7 @@ class CheckRunner
             }
         }
 
-        $httpStatus = $overallStatus === 'failed' ? 500 : 200;
+        $httpStatus =  200;
 
         return new OhDearPayload(
             status: $overallStatus,
