@@ -9,7 +9,7 @@ class UsedDiskSpaceCheck extends Check
 {
     protected float $warningThreshold = 70;
     protected float $errorThreshold = 90;
-    protected string $diskPath = '/';
+    protected string $diskPath = '';
 
     public function warnWhenUsedSpaceIsAbovePercentage(float $percentage): self
     {
@@ -53,8 +53,10 @@ class UsedDiskSpaceCheck extends Check
 
     protected function getDiskUsagePercentage(): float
     {
-        $totalSpace = disk_total_space($this->diskPath);
-        $freeSpace = disk_free_space($this->diskPath);
+        $path = $this->diskPath !== '' ? $this->diskPath : base_path();
+
+        $totalSpace = disk_total_space($path);
+        $freeSpace = disk_free_space($path);
 
         if (! $totalSpace || ! $freeSpace) {
             return 0.0;
