@@ -34,10 +34,24 @@ class UsedDiskSpaceCheck extends Check
 
     public function run(): Result
     {
-        $diskSpaceUsedPercentage = $this->getDiskUsagePercentage();
+        $path = $this->diskPath !== '' ? $this->diskPath : base_path();
+
+        try {
+            $diskSpaceUsedPercentage = $this->getDiskUsagePercentage($path);
+        } catch (\Throwable $e) {
+            return Result::make()
+                ->meta(['path' => $path])
+                ->warning("Could not determine disk usage for path '{$path}': {$e->getMessage()}");
+        }
+
+        if ($diskSpaceUsedPercentage === null) {
+            return Result::make()
+                ->meta(['path' => $path])
+                ->warning("Could not determine disk usage for path '{$path}'. The path may not be accessible.");
+        }
 
         $result = Result::make()
-            ->meta(['used_space_percentage' => $diskSpaceUsedPercentage])
+            ->meta(['used_space_percentage' => $diskSpaceUsedPercentage, 'path' => $path])
             ->shortSummary("{$diskSpaceUsedPercentage}%");
 
         if ($diskSpaceUsedPercentage > $this->errorThreshold) {
@@ -51,15 +65,13 @@ class UsedDiskSpaceCheck extends Check
         return $result->ok();
     }
 
-    protected function getDiskUsagePercentage(): float
+    protected function getDiskUsagePercentage(string $path): ?float
     {
-        $path = $this->diskPath !== '' ? $this->diskPath : base_path();
+        $totalSpace = @disk_total_space($path);
+        $freeSpace = @disk_free_space($path);
 
-        $totalSpace = disk_total_space($path);
-        $freeSpace = disk_free_space($path);
-
-        if (! $totalSpace || ! $freeSpace) {
-            return 0.0;
+        if ($totalSpace === false || $freeSpace === false || $totalSpace <= 0) {
+            return null;
         }
 
         $usedSpace = $totalSpace - $freeSpace;
