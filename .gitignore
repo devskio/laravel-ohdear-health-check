@@ -1,0 +1,12 @@
+/vendor/
+/node_modules/
+/.idea/
+/.vscode/
+/.phpunit.cache/
+/coverage/
+
+composer.lock
+.env
+.phpunit.result.cache
+phpunit.xml
+

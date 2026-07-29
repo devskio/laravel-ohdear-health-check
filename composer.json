@@ -1,20 +1,28 @@
 {
     "name": "devskio/laravel-ohdear-health-check",
+    "type": "library",
     "description": "A Laravel package to perform health checks for Oh Dear.",
     "keywords": [
         "devskio",
         "laravel",
+        "health-check",
+        "ohdear",
         "laravel-ohdear-health-check"
     ],
-    "homepage": "https://github.com/devskio/laravel-ohdear-health-check",
+    "homepage": "https://devsk.io",
     "license": "MIT",
     "authors": [
         {
-            "name": "devskio",
-            "email": "office@devsk.io",
+            "name": "Devsk.io",
+            "email": "contact@devsk.io",
+            "homepage": "https://devsk.io",
             "role": "Company"
         }
     ],
+    "support": {
+        "issues": "https://github.com/devskio/laravel-ohdear-health-check/issues",
+        "source": "https://github.com/devskio/laravel-ohdear-health-check"
+    },
     "require": {
         "php": "^8.2",
         "ohdearapp/health-check-results": "^1.0",
@@ -27,7 +35,7 @@
     },
     "require-dev": {
         "laravel/pint": "^1.14",
-        "nunomaduro/larastan": "^2.0.1",
+        "larastan/larastan": "^2.0||^3.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0"
     },
@@ -53,6 +61,6 @@
             ]
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

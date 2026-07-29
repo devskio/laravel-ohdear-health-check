@@ -5,9 +5,8 @@ namespace Devskio\LaravelOhdearHealthCheck\Http\Controllers;
 use Devskio\LaravelOhdearHealthCheck\Core\CheckRunner;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 
-class HealthCheckController extends Controller
+class HealthCheckController
 {
     public function __invoke(CheckRunner $runner): JsonResponse|Response
     {

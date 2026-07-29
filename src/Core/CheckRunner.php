@@ -7,6 +7,7 @@ use OhDear\HealthCheckResults\CheckResult as OhDearCheckResult;
 use OhDear\HealthCheckResults\CheckResults;
 use Spatie\Health\Checks\Check as SpatieCheck;
 use Spatie\Health\Checks\Result as SpatieResult;
+use Throwable;
 
 class CheckRunner
 {
@@ -107,7 +108,7 @@ class CheckRunner
             }
         }
 
-        $httpStatus =  200;
+        $httpStatus = 200;
 
         return new OhDearPayload(
             status: $overallStatus,
