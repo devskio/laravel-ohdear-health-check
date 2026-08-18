@@ -4,11 +4,10 @@ namespace Devskio\LaravelOhdearHealthCheck\Http\Controllers;
 
 use Devskio\LaravelOhdearHealthCheck\Core\CheckRunner;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 
 class HealthCheckController
 {
-    public function __invoke(CheckRunner $runner): JsonResponse|Response
+    public function __invoke(CheckRunner $runner): JsonResponse
     {
         $checks = array_merge(
             config('ohdear-health-check.checks', []),
@@ -17,10 +16,6 @@ class HealthCheckController
 
         $payload = $runner->run($checks);
 
-        if (config('ohdear-health-check.response_format') === 'ohdear' && $payload->rawCheckResults !== null) {
-            return response($payload->rawCheckResults->toJson(), $payload->httpStatus)
-                ->header('Content-Type', 'application/json');
-        }
 
         return response()->json($payload->toArray(), $payload->httpStatus);
     }

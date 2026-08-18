@@ -73,16 +73,6 @@ return [
      */
     'secret' => env('OHDEAR_HEALTH_CHECK_SECRET'),
 
-    /*
-     | JSON response format.
-     |
-     | Supported:
-     | - "array"   — package-native format
-     | - "ohdear"  — raw Oh Dear compatible JSON
-     |
-     | Override via env: OHDEAR_HEALTH_CHECK_RESPONSE_FORMAT
-     */
-    'response_format' => env('OHDEAR_HEALTH_CHECK_RESPONSE_FORMAT', 'array'),
 
     /*
      | The checks run when the health endpoint is hit.

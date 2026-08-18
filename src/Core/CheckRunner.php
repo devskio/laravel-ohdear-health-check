@@ -3,8 +3,6 @@
 namespace Devskio\LaravelOhdearHealthCheck\Core;
 
 use Illuminate\Support\Arr;
-use OhDear\HealthCheckResults\CheckResult as OhDearCheckResult;
-use OhDear\HealthCheckResults\CheckResults;
 use Spatie\Health\Checks\Check as SpatieCheck;
 use Spatie\Health\Checks\Result as SpatieResult;
 use Throwable;
@@ -27,9 +25,6 @@ class CheckRunner
         $results = [];
         $overallStatus = 'ok';
 
-        // Keep a raw OhDear CheckResults for consumers that want it.
-        $rawCheckResults = new CheckResults(new \DateTimeImmutable());
-
         foreach ($checks as $checkConfig) {
             [$check, $name, $options] = $this->makeCheck($checkConfig);
 
@@ -47,15 +42,6 @@ class CheckRunner
                         'meta' => $spatieResult->meta ?? [],
                     ];
 
-                    $rawCheckResults->addCheckResult(new OhDearCheckResult(
-                        $name,
-                        $name,
-                        (string) ($spatieResult->notificationMessage ?? $spatieResult->shortSummary ?? ''),
-                        (string) ($spatieResult->shortSummary ?? ''),
-                        $this->mapToOhDearStatus($status),
-                        (array) ($spatieResult->meta ?? [])
-                    ));
-
                     $overallStatus = $this->mergeOverallStatus($overallStatus, $status);
 
                     continue;
@@ -65,11 +51,9 @@ class CheckRunner
                 /** @var mixed $ohdearResult */
                 $ohdearResult = $check->run();
 
-                if (! $ohdearResult instanceof OhDearCheckResult) {
+                if (! $ohdearResult instanceof \OhDear\HealthCheckResults\CheckResult) {
                     throw new \RuntimeException('Check did not return a supported result type.');
                 }
-
-                $rawCheckResults->addCheckResult($ohdearResult);
 
                 $status = $this->mapOhDearStatus((string) $ohdearResult->status);
 
@@ -95,27 +79,15 @@ class CheckRunner
                     ],
                 ];
 
-                $rawCheckResults->addCheckResult(new OhDearCheckResult(
-                    $name,
-                    $name,
-                    $e->getMessage(),
-                    $e->getMessage(),
-                    OhDearCheckResult::STATUS_FAILED,
-                    ['exception' => get_class($e)]
-                ));
-
                 $overallStatus = 'failed';
             }
         }
-
-        $httpStatus = 200;
 
         return new OhDearPayload(
             status: $overallStatus,
             finishedAtIso8601: now()->toIso8601String(),
             checks: $results,
-            httpStatus: $httpStatus,
-            rawCheckResults: $rawCheckResults,
+            httpStatus: 200,
         );
     }
 
@@ -180,14 +152,6 @@ class CheckRunner
         };
     }
 
-    protected function mapToOhDearStatus(string $status): string
-    {
-        return match ($status) {
-            'ok' => OhDearCheckResult::STATUS_OK,
-            'warning' => OhDearCheckResult::STATUS_WARNING,
-            default => OhDearCheckResult::STATUS_FAILED,
-        };
-    }
 
     protected function mergeOverallStatus(string $overall, string $current): string
     {

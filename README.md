@@ -15,7 +15,7 @@ It ships with three built-in checks (database, disk space, error log) and is ful
 | Dependency | Version |
 |---|---|
 | PHP | `^8.2` |
-| Laravel | `^10 \| ^11 \| ^12` |
+| Laravel | `^10 \| ^11 \| ^12 \| ^13` |
 | spatie/laravel-health | `^1.23` |
 | ohdearapp/health-check-results | `^1.0` |
 
@@ -209,11 +209,6 @@ curl -i http://127.0.0.1:8000/healthcheck
 
 ---
 
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
----
 
 ## Credits
 

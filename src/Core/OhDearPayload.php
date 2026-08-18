@@ -2,8 +2,6 @@
 
 namespace Devskio\LaravelOhdearHealthCheck\Core;
 
-use OhDear\HealthCheckResults\CheckResults;
-
 class OhDearPayload
 {
     public function __construct(
@@ -12,7 +10,6 @@ class OhDearPayload
         /** @var array<int, array<string, mixed>> */
         public readonly array $checks,
         public readonly int $httpStatus,
-        public readonly ?CheckResults $rawCheckResults = null,
     ) {
     }
 
